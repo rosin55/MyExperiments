@@ -13,18 +13,22 @@ conn_str = 'DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';
 print(conn_str)
 cnxn = pyodbc.connect(conn_str)
 cursor = cnxn.cursor()
-cursor.execute("SELECT TOP(10) * FROM pers")
+cursor.execute("SELECT * FROM pers")
 row = cursor.fetchone()
 status = ''
-cprint('{:>5} {:<6} {:<10} {:<15} {:<10} {:<10} {:<10}'
+color_stat = 'white'
+cprint('{:>5} {:<12} {:<10} {:<15} {:<10} {:<10} {:<10}'
 	  .format('Код', 'Логин', 'Пароль', 'Фамилия', 'Имя', 'Отчество', 'Статус'), 'yellow', 'on_white')
 for row in cursor:
-	if row.AdmMsk:
+	if row.AdmMsk == 1:
 		status = 'Используется'
-	if row.AdmCod%2:
-		color_of_fone = 'reverse'
-	cprint('{:>5} {:<6} {:<10} {:<15} {:<10} {:<10} {:<10}'
-		.format(row.AdmCod, row.AdmLogin, row.AdmPwd, row.AdmNam1, row.AdmNam2, row.AdmNam3, status), 'yellow')
+		color_stat = 'yellow'
+	else:
+		status = 'Неиспользуется'
+		color_stat = 'red'
+
+	cprint('{:>5} {:<12} {:<10} {:<15} {:<10} {:<10} {:<10}'
+		.format(row.AdmCod, row.AdmLogin, row.AdmPwd, row.AdmNam1, row.AdmNam2, row.AdmNam3, status), color_stat)
 
 
 
