@@ -1,5 +1,5 @@
 '''
-Чтение данных из таблицы hotel3.pres MS SQL
+Чтение данных из таблицы hotel3.pers MS SQL
 '''
 import pyodbc
 server = 'localhost\\sqlexpress'
