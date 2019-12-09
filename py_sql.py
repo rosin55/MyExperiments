@@ -4,8 +4,9 @@
 import sys
 from termcolor import colored, cprint # Цветной терминал
 import pyodbc
-server = 'localhost\\sqlexpress'
-database = 'h3_prot'
+server = 'wks-stend2'
+#server = 'localhost\\sqlexpress'
+database = 'hotel3_voronovo'
 username = 'hotel3'
 password = '123'
 driver = '{SQL Server}'
