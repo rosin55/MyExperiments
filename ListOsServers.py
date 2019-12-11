@@ -1,4 +1,7 @@
-''' Пример выполнения коман операционной системы '''
+''' Пример выполнения команд операционной системы
+    Поиск всех серверов в сети и
+    вывод списка БД на выбранном сервере.
+'''
 
 import os
 import adodbapi
@@ -6,7 +9,12 @@ import adodbapi
 os.system('sqlcmd -L')
 ServerName = input('Имя сервера: ')
 
-conn_string = 'sqlcmd -S' + ServerName + ' -Uhotel3 -P123 -Q "SELECT name, database_id, create_date  FROM sys.databases"'
-print(conn_string)
-os.system(conn_string)
+myConnStr = 'Provider=SQLNCLI11; Data Source=' + ServerName + '; Initial Catalog=h3_prot; User ID=hotel3; Password=123'
+myConn = adodbapi.connect(myConnStr)
+
+myCursor = myConn.cursor()
+myCursor.execute('SELECT name, database_id, create_date  FROM sys.databases')
+
+for row in myCursor:
+    print(row)
 
