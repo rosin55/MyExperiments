@@ -26,18 +26,20 @@ myCursor = myConn.cursor() # читает данные для БД с выбра
 myCurDB_size = myConn.cursor() # читает размер, занимаемый БД на диске
 myCursor.execute('SELECT name, database_id, create_date, compatibility_level  FROM sys.databases')
 
-cprint('{:^25} {:^5} {:>10} {:>15} {:>20}'.format('Имя БД', 'Номер', 'Дата создания', 'Совместимость', 'Размер'), 'yellow')
+cprint('{:^25} {:^5} {:>10} {:>15} {:>20}'.format('Имя БД', 'Номер', 'Дата создания', 'Совместимость', 'Размер(Mb)'), 'yellow')
 for row in myCursor:
     s_create_date = str(row.create_date)[:10]  # первые 10-ть символов даты
     sovmestim = v_server[row.compatibility_level]
-    myCurDB_size.execute('select size_db = str(sum(convert(dec(17,2),size)) / 128, 10, 2) from ' + row.name + '.dbo.sysfiles')
-    size_DB = str(myCurDB_size.fetchone())
-    print(size_DB)
-    cprint('{:<25} {:<5} {:>10} {:>20}'.format(row.name, row.database_id, s_create_date, sovmestim))
+    size_DB = '----'
+    if row.name not in ('master','model','msdb','tempdb','ReportServer','ReportServerTempDB'):
+        myCurDB_size.execute(
+            'select size_db = str(sum(convert(dec(17,2),size)) / 128, 10, 2) from ' + row.name + '.dbo.sysfiles')
+        size_DB = str(myCurDB_size.fetchone())
+    cprint('{:<25} {:<5} {:>10} {:>20} {:^20}'.format(row.name, row.database_id, s_create_date, sovmestim, size_DB))
 
-myCurDB_size.execute('select size_db = str(sum(convert(dec(17,2),size)) / 128, 10, 2) from h3_sar.dbo.sysfiles')
-print(myCurDB_size.fetchone())
-pass
+
+
+
 
 
 
