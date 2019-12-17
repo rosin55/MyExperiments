@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ''' Пример выполнения команд операционной системы
     Поиск всех серверов в сети и
     вывод списка БД на выбранном сервере.
@@ -31,11 +32,12 @@ for row in myCursor:
     s_create_date = str(row.create_date)[:10]  # первые 10-ть символов даты
     sovmestim = v_server[row.compatibility_level]
     size_DB = '----'
-    if row.name not in ('master','model','msdb','tempdb','ReportServer','ReportServerTempDB'):
+    if row.name not in ('master','model','msdb','tempdb','ReportServer','ReportServerTempDB', 'RACDemo'):
         myCurDB_size.execute(
             'select size_db = str(sum(convert(dec(17,2),size)) / 128, 10, 2) from ' + row.name + '.dbo.sysfiles')
+
         size_DB = str(myCurDB_size.fetchone())
-    cprint('{:<25} {:<5} {:>10} {:>20} {:^20}'.format(row.name, row.database_id, s_create_date, sovmestim, size_DB))
+    cprint('{:<25} {:<5} {:>10} {:>20} {:^20}'.format(row.name, row.database_id, s_create_date, sovmestim, size_DB[2:12]))
 
 
 
