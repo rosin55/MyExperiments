@@ -5,7 +5,7 @@
 import adodbapi
 
 myhost = ".\SQLEXPRESS"
-mydatabase = "h3_prot"
+mydatabase = "h3_pr"
 myuser = "hotel3"
 mypassword = "123"
 
@@ -16,8 +16,11 @@ print(myConnStr)
 myConn = adodbapi.connect(myConnStr)
 
 myCursor = myConn.cursor()
-myCursor.execute('select * from pers')
+try:
+	myCursor.execute('select size_db = str(sum(convert(dec(17,2),size)) / 128, 10, 2) from ' + mydatabase + '.dbo.sysfiles')
+	for row in myCursor:
+		print(row)
+except Exception as err:
+	print('Ошибка', err)
 
-for row in myCursor:
-	print(row)
 
